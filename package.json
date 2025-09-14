@@ -1,0 +1,13 @@
+{
+  "name": "lfp_proyecto1",
+  "version": "1.0.0",
+  "description": "Proyecto Torneos Futbol",
+  "type": "module",
+  "main": "Crear módulo de interpretación que: Tome los tokens del lexerConstruya estructuras de datos del torneoCrear módulo de cálculos para:Tablas de posicionesEstadísticasIntegrar Graphviz para generar bracketsCrear interfaz web que muestre todo ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Carlos D",
+  "license": "ISC"
+}
+
