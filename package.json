@@ -1,13 +1,29 @@
 {
   "name": "lfp_proyecto1",
   "version": "1.0.0",
-  "description": "Proyecto Torneos Futbol",
-  "type": "module",
-  "main": "Crear módulo de interpretación que: Tome los tokens del lexerConstruya estructuras de datos del torneoCrear módulo de cálculos para:Tablas de posicionesEstadísticasIntegrar Graphviz para generar bracketsCrear interfaz web que muestre todo ",
+  "main": "index.html",
   "scripts": {
+    "start": "live-server --port=3000 --open",
+    "dev": "live-server --port=3000 --open",
+    "serve": "live-server --port=3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Carlos D",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlosDiaz202400245/LFP_Proyecto1_202400245.git"
+  },
+  "keywords": [
+    "lexer",
+    "analizador-lexico",
+    "torneos",
+    "javascript",
+    "compiladores"
+  ],
+  "author": "carlos D",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carlosDiaz202400245/LFP_Proyecto1_202400245/issues"
+  },
+  "homepage": "https://github.com/carlosDiaz202400245/LFP_Proyecto1_202400245#readme",
+  "description": ""
 }
-

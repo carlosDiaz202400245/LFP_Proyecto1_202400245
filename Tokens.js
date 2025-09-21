@@ -10,8 +10,10 @@ export class Token {
 // Palabras reservadas actualizadas
 export const PALABRAS_RESERVADAS = [
     "TORNEO", "EQUIPOS", "ELIMINACION", "equipo", "jugador", 
-    "partido", "resultado", "goleador", "vs", "cuartos", 
-    "semifinal", "final", "goleadores"
+    "partido", "resultado", "goleador", "vs", "goleadores"
+];
+export const FASES_TORNEO = [
+    "cuartos", "semifinal", "final"
 ];
 
 // Atributos válidos actualizados

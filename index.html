@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TourneyJS - Analizador de Torneos</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --background-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --border-color: #bdc3c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: var(--secondary-color);
+            background-color: #f8f9fa;
+        }
+
+        .file-upload i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--accent-color), #c0392b);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .content-area {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .reportes-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+            display: none;
+        }
+        
+        .reportes-container h4 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        
+        .reportes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+        
+        .btn-reporte {
+            background: linear-gradient(135deg, #27ae60, #219653);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-reporte:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+        }
+
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-color);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            opacity: 1;
+            border-bottom-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .code-editor {
+            width: 100%;
+            height: 300px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            background: #f8f9fa;
+        }
+
+        .results {
+            margin-top: 1.5rem;
+        }
+
+        .result-section {
+            margin-bottom: 2rem;
+        }
+
+        .result-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-color), #34495e);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .error-row {
+            background-color: #ffe6e6;
+            color: #c0392b;
+        }
+
+        .error-row:hover {
+            background-color: #ffcccc;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .bracket-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .bracket {
+            display: flex;
+            justify-content: space-around;
+            min-height: 400px;
+        }
+
+        .bracket-phase {
+            flex: 1;
+            padding: 1rem;
+            border-right: 2px solid var(--border-color);
+        }
+
+        .bracket-phase:last-child {
+            border-right: none;
+        }
+
+        .bracket-match {
+            background: #f8f9fa;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .team-score {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .winner {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>TourneyJS - Analizador de Torneos</h1>
+            <p>Analizador léxico para gestión de torneos deportivos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="controls">
+                    <div class="file-upload" id="fileUpload">
+                        <>
+                        <h3>Cargar Archivo</h3>
+                        <p>Haga clic o arrastre un archivo .txt</p>
+                        <input type="file" id="fileInput" class="file-input" accept=".txt">
+                    </div>
+
+                    <button class="btn" id="btnAnalizar" disabled>Analizar Torneo</button>
+                    <button class="btn" id="btnReporte" disabled>Generar Reporte</button>
+                    <button class="btn" id="btnBracket" disabled>Mostrar Bracket</button>
+                    <button class="btn btn-danger" id="btnLimpiar">Limpiar Todo</button>
+                </div>
+                 <div class="reportes-container" id="reportesContainer">
+                        <h4>📊 Reportes Disponibles</h4>
+                        <div class="reportes-grid">
+                            <button class="btn-reporte" onclick="descargarReporteEquipos()">
+                                 Reporte de Equipos
+                            </button>
+                            <button class="btn-reporte" onclick="descargarReporteGoleadores()">
+                                 Reporte de Goleadores
+                            </button>
+                            <button class="btn-reporte" onclick="descargarReporteGeneral()">
+                                 Reporte General
+                            </button>
+                            <button class="btn-reporte" onclick="descargarReporteBracket()">
+                                 Reporte Bracket
+                            </button>
+                            <button class="btn-reporte" onclick="descargarGraphviz()">
+                                 Diagrama Bracket
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="file-info" id="fileInfo"
+                    style="display: none; margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                    <h4>Archivo cargado:</h4>
+                    <p id="fileName"></p>
+                    <p id="fileSize"></p>
+                </div>
+            </aside>
+
+            <main class="content-area">
+                <div class="tab-container">
+                    <div class="tabs">
+                        <button class="tab active" data-tab="definicion">Definición del Torneo</button>
+                        <button class="tab" data-tab="tokens">Tokens</button>
+                        <button class="tab" data-tab="errores">Errores</button>
+                     
+                        <button class="tab" data-tab="bracket">Bracket</button>
+                    </div>
+
+                    <div class="tab-content active" id="definicion">
+                        <textarea class="code-editor" id="codeEditor"
+                            placeholder="Pegue aquí el código del torneo o cargue un archivo..."></textarea>
+                            <button class="btn" id="btnAnalizarTexto" style="margin-top: 1rem; width: 100%;">
+        🔍 Analizar Texto Ingresado
+    </button>
+                    </div>
+
+                    <div class="tab-content" id="tokens">
+                        <div class="results">
+                            <h3>Tokens Reconocidos</h3>
+                            <div id="tokensTable"></div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="errores">
+                        <div class="results">
+                            <h3>Errores Léxicos</h3>
+                            <div id="errorsTable"></div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="bracket">
+                        <div class="results">
+                            <div id="bracketContent">
+                                <div style="text-align: center; padding: 3rem;">
+                                    <div style="font-size: 4rem; margin-bottom: 1rem;">🎯</div>
+                                    <h3>Visualizador de Bracket</h3>
+                                    <p>Haz clic en "Mostrar Bracket" después de analizar un torneo para ver el diagrama.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Procesando...</p>
+                </div>
+            </main>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 TourneyJS - Lenguajes Formales y de Programación</p>
+        </div>
+    </footer>
+
+    <script type="module"  src ="app.js">
+    
+    </script>
+</body>
+
+</html>
